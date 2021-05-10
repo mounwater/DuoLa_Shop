@@ -1,9 +1,8 @@
 <template>
   <div id="app">
     <div class="top">
-      <img width="36" src="/img/logo.5e930798.jpg" alt="" /><span
-        >哆啦商城-首页</span
-      >
+      <img width="36" src="/img/logo.5e930798.jpg" alt="" />
+      <router-link :to="{name:'Home'}"><span>哆啦商城-首页</span></router-link>
     </div>
     <div class="main">
       <router-view></router-view>
@@ -13,9 +12,9 @@
 </template>
 
 <script>
-import Nav from './components/Nav';
+import Nav from "./components/Nav";
 export default {
-  name: 'App',
+  name: "App",
   data() {
     return {
       isShowNav: true,
