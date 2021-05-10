@@ -1,27 +1,23 @@
-import axios from 'axios';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
+import axios from "axios";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
+// 创建一个axios实例
 const instance = axios.create({
-  baseURL: 'http://localhost:3009',
-  timeout: 5000,
+  baseURL: "http://localhost:3009",
+  timeout: 5000, // 请求超时时间
 });
-/**
- *发起请求
- * @param {*} url
- * @param {*} params url中传递的参数
- * @param {*} data 传递的数据
- * @returns
- */
 
+// https://github.com/axios/axios
+// 请求的全局拦截
+// 全局请求拦截，请求发起之前会执行的一个函数
+// Add a request interceptor
 instance.interceptors.request.use(
   function(config) {
     NProgress.start(); // 启动loading
     // 此处设置全局请求拦截的配置信息，可以在这个位置添加请求头
     // Do something before request is sent
-    config.headers['authorization'] = `bearer ${sessionStorage.getItem(
-      'token'
-    )}`;
+    config.headers["authorization"] = `bearer ${localStorage.getItem("token")}`;
     return config;
   },
   function(error) {
@@ -34,11 +30,10 @@ instance.interceptors.request.use(
 // Add a response interceptor
 instance.interceptors.response.use(
   function(response) {
-    //response表示响应到的数据
     NProgress.done(); // 删除loading效果
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    return response;
+    return response.data;
   },
   function(error) {
     NProgress.done();
@@ -47,15 +42,42 @@ instance.interceptors.response.use(
     // console.dir(error); //
     // 如果接口返回的状态码是401，跳转到登录页
     if (error.response.status && error.response.status === 401) {
-      // window.location.href = '/';
-      console.log(error.response);
+      window.location.href = "/";
     } else {
       return Promise.reject(error);
     }
   }
 );
 
-export const get = (url, params) => instance.get(url, { params });
+// config中的params表示url中传递的参数
+// export const get = (url, params) => instance.get(url, { params });
+export function get(url, params) {
+  return instance.get(url, { params });
+}
+
+// export function post(url, data) {
+//   return instance.post(url, data);
+// }
+
+/**
+ * 发起一个post请求
+ * @param {*} url   请求地址
+ * @param {*} data  传递的数据
+ * @returns
+ */
 export const post = (url, data) => instance.post(url, data);
+
+/**
+ * 发起一个put请求
+ * @param {*} url   请求地址
+ * @param {*} data  传递参数
+ * @returns
+ */
 export const put = (url, data) => instance.put(url, data);
+
+/**
+ * 发起一个删除请求
+ * @param {*} url 请求地址
+ * @returns
+ */
 export const del = (url) => instance.delete(url);

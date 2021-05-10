@@ -1,126 +1,56 @@
 <template>
-  <!-- 热卖商品展示列表 -->
-  <div class="products">
-    <hr />
-    <div>
-      <div class="item" v-for="item in list" :key="item._id">
-        <router-link
-          :to="{
-            name: 'Detail',
-            params: {
-              id: item._id,
-              l: Math.random(),
-              o: item.price,
-            },
-            query: {
-              name: item.name,
-            },
-          }"
-          tag="div"
-        >
-          <img :src="item.coverImg" alt="" />
-          <h3>{{ item.name }}</h3>
-        </router-link>
-        <button @click="addCart(item._id)" class="add">
-          加入购物车
-        </button>
-      </div>
-      <button class="more" @click="loadMoredata">加载更多</button>
-    </div>
+  <div class="about">
+    <van-list
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+    >
+      <van-card
+        v-for="i in list"
+        :key="i._id"
+        :num="i.quantity"
+        :price="i.price"
+        :title="i.name"
+        :thumb="i.coverImg"
+        :thumb-link="'/#/detail?id=' + i._id"
+      >
+        <template #footer>
+          <van-button size="small" icon="cart-o" type="danger"></van-button>
+          <!-- <van-button size="mini">按钮</van-button> -->
+        </template>
+      </van-card>
+    </van-list>
   </div>
 </template>
-
 <script>
-import axios from 'axios';
+import { loadProducts } from '../services/products';
 export default {
-  name: 'List',
+  created() {
+    this.loadData();
+  },
   data() {
     return {
       list: [],
       page: 1,
+      loading: false, // 是否在加载中
+      finished: false, // 是否加载完成
     };
   },
-  created() {
-    console.log('ok');
-    this.loadMoredata();
-  },
   methods: {
-    async loadMoredata() {
-      const res = await axios.get(
-        'http://localhost:3009/api/v1/products?page=' + this.page
-      );
+    async loadData() {
+      const res = await loadProducts(this.page, this.$route.params.id);
+      this.list = [...this.list, ...res.products];
       this.page++;
-      this.list = [...this.list, ...res.data.products];
-      // console.log(this.list);
+      this.loading = false; // 设置加载完成
+      if (this.page > res.pages) this.finished = true; // 如果加载到最后一页设置结束
     },
-    async addCart(id) {
-      // console.log(id);
-      await axios
-        .post(
-          'http://localhost:3009/api/v1/shop_carts',
-          {
-            product: id,
-            quantity: 1,
-          },
-          {
-            headers: {
-              authorization: 'bearer ' + sessionStorage.getItem('token'),
-            },
-          }
-        )
-        .then((res) => {
-          console.log(res);
-        });
-
-      await axios
-        .get('http://localhost:3009/api/v1/shop_carts', {
-          headers: {
-            authorization: 'bearer ' + sessionStorage.getItem('token'),
-          },
-        })
-        .then((res) => {
-          this.shopCount = res.data.length;
-          // this.eventBus.$emit('buyed', this.shopCount);
-        });
+    // 滚动到底部的时候执行触发
+    onLoad() {
+      console.log('到底了');
+      this.loading = true; // 设置加载中为true
+      this.loadData(); // 开始请求数据
     },
   },
 };
 </script>
-
-<style scoped>
-img {
-  margin: 0 auto;
-}
-.products {
-  text-align: center;
-}
-.item {
-  text-align: center;
-  margin-bottom: 10vh;
-}
-.item img {
-  width: 60vw;
-}
-.more {
-  width: 8rem;
-  border: none;
-  background: deeppink;
-  color: white;
-  line-height: 2rem;
-  text-align: center;
-  margin-bottom: 2vh;
-}
-h3 {
-  line-height: 4rem;
-  text-decoration: none;
-  color: black;
-}
-.add {
-  width: 6rem;
-  height: 2rem;
-  border: none;
-  border-radius: 15px;
-  color: white;
-  background: deeppink;
-}
-</style>

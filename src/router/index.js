@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
+
 Vue.filter('dalImg', (v) => {
   if (v) {
     if (v.startsWith('http')) {
@@ -41,14 +42,14 @@ const routes = [
   {
     path: '/hot',
     name: 'Hot',
-    meta: {
-      hideNav: true,
-    },
     component: () => import('@/views/Hot'),
   },
   {
     path: '/detail',
     name: 'Detail',
+    meta: {
+      hideNav: true,
+    },
     component: () => import('@/views/Detail'),
   },
   {

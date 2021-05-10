@@ -15,12 +15,24 @@
       <div class="swiper-button-prev"></div>
     </div>
     <div class="content">
-      <h3>
-        曾经，<br />我们都梦想过也有一个哆啦A梦，<br />竹蜻蜓、任意门或者时光机，<br />哆啦A梦的神奇道具有着各种神奇的功能。
-      </h3>
-      <p class="tips">
-        哆啦商城旨在为喜爱哆啦A梦的朋友们提供一个便捷的购物平台
-      </p>
+      <van-grid :column-num="3">
+        <van-grid-item
+          v-for="c in categories"
+          :key="c._id"
+          :icon="c.coverImg"
+          :text="c.name"
+          :to="{ name: 'Hot', params: { id: c._id } }"
+        >
+        </van-grid-item>
+        <div v-for="c in categories" :key="c._id">
+          <p>
+            <span>{{ c.name }}</span
+            ><router-link :to="{ name: 'Hot', params: { id: c._id } }"
+              >更多</router-link
+            >
+          </p>
+        </div>
+      </van-grid>
     </div>
   </div>
 </template>
@@ -29,12 +41,23 @@
 import Swiper from 'swiper';
 import 'swiper/css/swiper.css';
 import axios from 'axios';
+import { loadCategories } from '../services/categories';
+import { loadProducts } from '../services/products';
 export default {
   name: 'Home',
   data() {
     return {
       list: [],
+      categories: [],
+      products: [],
     };
+  },
+  async created() {
+    const c = await loadCategories();
+    const p = await loadProducts();
+    console.log(c);
+    this.categories = c.categories;
+    this.products = p.products;
   },
   mounted() {
     var getPic = async () => {
@@ -94,10 +117,6 @@ body {
 
 .swiper-slide img {
   width: 100%;
-}
-.content {
-  text-align: left;
-  padding: 5vh 5vw;
 }
 h3 {
   line-height: 4.133333rem;
