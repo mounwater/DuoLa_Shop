@@ -25,16 +25,25 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
+    meta: {
+      hideNav: true,
+    },
     component: () => import('@/views/Login'),
   },
   {
     path: '/register',
     name: 'Register',
+    meta: {
+      hideNav: true,
+    },
     component: () => import('@/views/Register'),
   },
   {
     path: '/hot',
     name: 'Hot',
+    meta: {
+      hideNav: true,
+    },
     component: () => import('@/views/Hot'),
   },
   {
