@@ -11,7 +11,7 @@
     <router-link to="cart" tag="li" :class="page == 'Cart' ? 'active' : ''">
       <i class="fa fa-shopping-cart" />
       <span>购物车</span>
-      <span class="dot" v-show="count > 0">{{ count }}</span>
+      <span class="dot" v-show="cartCount > 0">{{ cartCount }}</span>
     </router-link>
     <router-link to="user" tag="li" :class="page == 'User' ? 'active' : ''">
       <i class="fa fa-user" />
@@ -21,8 +21,9 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { mapState, mapActions } from 'vuex';
 export default {
+  name: 'Nav',
   data() {
     return {
       page: 'home',
@@ -30,30 +31,18 @@ export default {
     };
   },
   created() {
-    // 监听
-    // this.eventBus.$on('buyed', this.buyHandle); //监听buyed事件
-    //每次加载导航栏时都会判断一下，是否为登录状态，再去查询用户的购物车商品数量
-    if (sessionStorage.getItem('token')) {
-      axios
-        .get('http://localhost:3009/api/v1/shop_carts', {
-          headers: {
-            authorization: 'bearer ' + sessionStorage.getItem('token'),
-          },
-        })
-        .then((res) => {
-          this.count = res.data.length;
-        });
-    }
+    this.updateAsync();
   },
   methods: {
-    buyHandle(v) {
-      this.count = v;
-    },
+    ...mapActions(['updateAsync']),
   },
   watch: {
     $route(v) {
       this.page = v.name;
     },
+  },
+  computed: {
+    ...mapState(['cartCount']),
   },
 };
 </script>

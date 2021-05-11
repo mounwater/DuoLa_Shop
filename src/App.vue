@@ -1,8 +1,11 @@
 <template>
   <div id="app">
     <div class="top">
+      <div class="backTo" v-show="isShow">
+        <span v-on:click="back">返回</span>
+      </div>
       <img width="36" src="/img/logo.5e930798.jpg" alt="" />
-      <router-link :to="{name:'Home'}"><span>哆啦商城-首页</span></router-link>
+      <router-link :to="{ name: 'Home' }"><span>哆啦商城</span></router-link>
     </div>
     <div class="main">
       <router-view></router-view>
@@ -12,12 +15,13 @@
 </template>
 
 <script>
-import Nav from "./components/Nav";
+import Nav from './components/Nav';
 export default {
-  name: "App",
+  name: 'App',
   data() {
     return {
       isShowNav: true,
+      isShow: true,
     };
   },
   watch: {
@@ -27,10 +31,20 @@ export default {
       } else {
         this.isShowNav = true;
       }
+      if (v.meta.hideBackto) {
+        this.isShow = false;
+      } else {
+        this.isShow = true;
+      }
     },
   },
   components: {
     Nav,
+  },
+  methods: {
+    back() {
+      this.$router.go(-1); //返回上一层
+    },
   },
 };
 </script>

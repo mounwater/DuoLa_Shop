@@ -30,6 +30,8 @@
 <script>
 import { loadProducts } from '../services/products';
 import { addToCart } from '../services/carts';
+import { mapActions } from 'vuex';
+import { Toast } from 'vant';
 export default {
   created() {
     this.loadData();
@@ -61,13 +63,13 @@ export default {
       const res = await addToCart(id, 1);
       // console.log(res);
       if (res.code === 'success') {
-        this.$router.push({
-          name: 'Cart',
-        });
+        this.updateAsync();
+        Toast.success('添加购物车成功！');
       } else {
         alert('添加失败！');
       }
     },
+    ...mapActions(['updateAsync']),
   },
 };
 </script>

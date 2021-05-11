@@ -21,6 +21,7 @@
 <script>
 import axios from 'axios';
 import { addToCart } from '../services/carts';
+import { mapActions } from 'vuex';
 export default {
   name: 'Detail',
   data() {
@@ -48,6 +49,7 @@ export default {
       );
       // console.log(res);
       if (res.code === 'success') {
+        this.updateAsync();
         this.$router.push({
           name: 'Cart',
         });
@@ -55,6 +57,7 @@ export default {
         alert('添加失败！');
       }
     },
+    ...mapActions(['updateAsync']),
   },
 };
 </script>
@@ -75,19 +78,31 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
 }
 input {
   width: 6rem;
   text-align: center;
 }
+.countDo {
+  width: 11rem;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 1rem;
+}
 .countDo span {
-  display: inline-block;
+  display: block;
   width: 2rem;
   height: 2rem;
+  border-radius: 50%;
   color: white;
   background: orange;
   font-size: 2rem;
   line-height: 2rem;
+}
+.van-button--normal {
+  border-radius: 22px;
+  padding: 0px 44px;
+  font-size: 14px;
+  height: 2.5rem;
 }
 </style>

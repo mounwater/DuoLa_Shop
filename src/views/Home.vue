@@ -89,7 +89,6 @@ export default {
       const comRes = await loadProducts(1, res._id);
       this.products.push({ cid: res._id, product: comRes.products });
     });
-    // console.log(this.products);
   },
   mounted() {
     var getPic = async () => {
@@ -191,5 +190,12 @@ h3 {
 }
 .fenlei {
   font-weight: bold;
+}
+.van-grid-item {
+  position: relative;
+  box-sizing: border-box;
+  padding: 0.3rem;
+  overflow: hidden;
+  background: #f6f6f6;
 }
 </style>

@@ -20,6 +20,9 @@ const routes = [
   {
     path: '/',
     name: 'Home',
+    meta: {
+      hideBackto: true,
+    },
     component: () => import('@/views/Home'),
   },
 
