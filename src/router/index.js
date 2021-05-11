@@ -105,8 +105,8 @@ const router = new VueRouter({
 });
 //前置守卫
 router.beforeEach((to, from, next) => {
-  console.log(to); //到哪去
-  console.log(from); //从哪来
+  to,
+  from;
   if (to.meta.needLogin) {
     if (sessionStorage.getItem('token')) {
       next();
@@ -124,6 +124,4 @@ router.afterEach((to, from) => {
   console.log(from); //从哪来
   console.log('路由跳转之后执行');
 });
-
-
 export default router;
