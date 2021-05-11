@@ -51,6 +51,9 @@ a {
   height: 6vh;
   line-height: 6vh;
   color: skyblue;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid gray;
 }
 .top img {
   float: left;
@@ -58,4 +61,10 @@ a {
 .top span {
   font-weight: bold;
   float: left;
+  color: black;
+}
+.backTo {
+  position: absolute;
+  top: 0;
+  left: 1rem;
 }

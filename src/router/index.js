@@ -20,6 +20,9 @@ const routes = [
   {
     path: '/',
     name: 'Home',
+    meta: {
+      hideBackto: true,
+    },
     component: () => import('@/views/Home'),
   },
 
@@ -92,9 +95,9 @@ const routes = [
     component: () => import('@/views/do/ChangeUserInfo'),
   },
   {
-    path: '/changeaddress',
-    name: 'ChangeAddress',
-    component: () => import('@/views/do/ChangeAddress'),
+    path: '/editor',
+    name: 'Editor',
+    component: () => import('@/views/do/Editor'),
   },
   {
     path: '/addaddress',
@@ -108,8 +111,7 @@ const router = new VueRouter({
 });
 //前置守卫
 router.beforeEach((to, from, next) => {
-  console.log(to); //到哪去
-  console.log(from); //从哪来
+  to, from;
   if (to.meta.needLogin) {
     if (sessionStorage.getItem('token')) {
       next();

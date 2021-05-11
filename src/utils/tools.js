@@ -3,19 +3,19 @@
  * @param {*} token
  * @returns
  */
-export const setToken = (token) => localStorage.setItem("token", token);
+export const setToken = (token) => sessionStorage.setItem('token', token);
 
 /**
  * 获取token
  * @returns
  */
-export const getToken = () => localStorage.getItem("token");
+export const getToken = () => sessionStorage.getItem('token');
 
 /**
  * 删除token
  * @returns
  */
-export const removeToken = () => localStorage.removeItem("token");
+export const removeToken = () => sessionStorage.removeItem('token');
 
 /**
  * 判断是否登录
