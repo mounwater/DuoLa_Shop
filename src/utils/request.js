@@ -1,10 +1,10 @@
-import axios from 'axios';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
+import axios from "axios";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
 // 创建一个axios实例
 const instance = axios.create({
-  baseURL: 'http://localhost:3009',
+  baseURL: "http://localhost:3009",
   timeout: 5000, // 请求超时时间
 });
 
@@ -17,9 +17,7 @@ instance.interceptors.request.use(
     NProgress.start(); // 启动loading
     // 此处设置全局请求拦截的配置信息，可以在这个位置添加请求头
     // Do something before request is sent
-    config.headers['authorization'] = `bearer ${sessionStorage.getItem(
-      'token'
-    )}`;
+    config.headers["authorization"] = `bearer ${sessionStorage.getItem("token")}`;
     return config;
   },
   function(error) {
@@ -44,8 +42,7 @@ instance.interceptors.response.use(
     // console.dir(error); //
     // 如果接口返回的状态码是401，跳转到登录页
     if (error.response.status && error.response.status === 401) {
-      alert('请登录！');
-      window.location.href = '/';
+      // window.location.href = "/";
     } else {
       return Promise.reject(error);
     }
