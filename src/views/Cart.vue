@@ -3,17 +3,17 @@
   <div>
     <hr />
     <div v-for="item in list" :key="item._id" class="commidity">
-      <img :src="item.product.coverImg" alt="" />
+      <img :src="item.product.coverImg" alt />
       <div class="cartInfo">
         <p class="comName">{{ item.product.name }}</p>
-        <span>单价{{ item.product.price }}元</span
-        ><span class="sum"
-          >单个商品总价{{ item.quantity * item.product.price }}元</span
-        >
+        <span>单价{{ item.product.price }}元</span>
+        <span class="sum">单个商品总价{{ item.quantity * item.product.price }}元</span>
         <p class="comCount">
-          数量<span class="minus" @click="minus(item.product._id)">-</span
-          >{{ item.quantity
-          }}<span class="adds" @click="adds(item.product._id)">+</span>
+          数量
+          <span class="minus" @click="minus(item.product._id)">-</span>
+          {{ item.quantity
+          }}
+          <span class="adds" @click="adds(item.product._id)">+</span>
           <button @click="delCart(item._id)">删除</button>
         </p>
       </div>

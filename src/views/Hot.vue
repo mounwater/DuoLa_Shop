@@ -1,11 +1,13 @@
 <template>
   <div class="about">
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
+    <van-card
+      num="2"
+      price="2.00"
+      desc="描述信息"
+      title="商品标题"
+      thumb="https://img01.yzcdn.cn/vant/ipad.jpeg"
+    />
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
       <van-card
         v-for="i in list"
         :key="i._id"
@@ -24,7 +26,9 @@
   </div>
 </template>
 <script>
-import { loadProducts } from '../services/products';
+import { loadProducts } from '../services/products'
+
+
 export default {
   created() {
     this.loadData();
@@ -52,5 +56,8 @@ export default {
       this.loadData(); // 开始请求数据
     },
   },
+  mounted: {
+
+  }
 };
 </script>

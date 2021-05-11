@@ -7,12 +7,9 @@
       <h3>{{ user.userName }}</h3>
     </div>
     <p class="do">
-      <router-link
-        :to="{
+      <router-link :to="{
           name: 'Changeinfo',
-        }"
-        >修改用户信息</router-link
-      >
+        }">修改用户信息</router-link>
       <button @click="logOut">退出当前登录</button>
     </p>
   </div>

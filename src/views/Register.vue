@@ -5,34 +5,32 @@
       <!-- <img src="../assets/logo.jpg" alt="" style="width:35%;display:block;margin: 1rem auto;" /> -->
     </router-link>
     <van-form @submit="onSubmit">
-      
-      <van-field 
-      v-model="userName"
-      name="userName"
-      label="用户名"
-      placeholder="用户名"
-      :rules="[{required:true,message:'请填写用户名'}]"
-      />
-      
-
       <van-field
-      v-model="password"
-      type="password"
-      name="password"
-      label="密码"
-      placeholder="密码"
-      :rules="[{required:true,message:'请填写密码'}]"
+        v-model="userName"
+        name="userName"
+        label="用户名"
+        placeholder="用户名"
+        :rules="[{required:true,message:'请填写用户名'}]"
       />
 
       <van-field
-      v-model="repassword"
-      type="password"
-      name="repassword"
-      label="确认密码"
-      placeholder="密码"
-      :rules="[{required:true,message:'请再次填写密码'}]"
+        v-model="password"
+        type="password"
+        name="password"
+        label="密码"
+        placeholder="密码"
+        :rules="[{required:true,message:'请填写密码'}]"
       />
-      
+
+      <van-field
+        v-model="repassword"
+        type="password"
+        name="repassword"
+        label="确认密码"
+        placeholder="密码"
+        :rules="[{required:true,message:'请再次填写密码'}]"
+      />
+
       <div>
         <van-button round block type="info" native-type="submit">注册</van-button>
       </div>
@@ -44,40 +42,40 @@
     <button class="btn" @click="regHandle">
       注册
     </button>
-    <router-link to="/login" class="more">已有账号，我要登录</router-link> -->
+    <router-link to="/login" class="more">已有账号，我要登录</router-link>-->
   </div>
 </template>
 
 <script>
-import {Toast} from 'vant';
-import {setToken} from "../utils/tools"
-import {reg} from '../services/auth'
+import { Toast } from 'vant';
+import { setToken } from "../utils/tools"
+import { reg } from '../services/auth'
 export default {
   name: 'Login',
   data() {
     return {
       userName: '',
       password: '',
-      repassword:'',
+      repassword: '',
     };
   },
   methods: {
-    async onSubmit(values){
-      if(values.password===values.repassword){
-        const res=await reg(values);
-        if(res.code==="success"){
+    async onSubmit(values) {
+      if (values.password === values.repassword) {
+        const res = await reg(values);
+        if (res.code === "success") {
           setToken(res.token);
           this.$router.push({
-            name:"Login",
+            name: "Login",
           })
-        }else{
+        } else {
           Toast.fail(res.message);
         }
         console.log(res)
-      }else{
+      } else {
         Toast.fail("两次输入的密码不一致");
       }
-      
+
     },
   },
 };
