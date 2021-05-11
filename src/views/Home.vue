@@ -24,75 +24,10 @@
           :to="{ name: 'Hot', params: { id: c._id } }"
         >
         </van-grid-item>
-        <div class="showthere">
+        <div class="showthere" v-for="(item, index) in categories" :key="index">
           <p class="showtitle">
-            <span class="fenlei">手机</span
-            ><router-link
-              :to="{ name: 'Hot', params: { id: '60923bd00cac5712dc34e5ee' } }"
-              >更多&gt;</router-link
-            >
-          </p>
-          <div class="showbottom">
-            <ul>
-              <li class="card" v-for="phoneCom in phone" :key="phoneCom._id">
-                <router-link
-                  :to="{
-                    name: 'Detail',
-                    params: {
-                      id: phoneCom._id,
-                    },
-                  }"
-                >
-                  <img :src="phoneCom.coverImg" alt="" />
-                  <p>
-                    {{ phoneCom.name }}
-                  </p>
-                  <p>
-                    <span class="red">{{ phoneCom.price }}</span
-                    >元
-                  </p>
-                </router-link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="showthere">
-          <p class="showtitle">
-            <span class="fenlei">智能手表</span
-            ><router-link
-              :to="{ name: 'Hot', params: { id: '60923bd00cac5712dc34e5ef' } }"
-              >更多&gt;</router-link
-            >
-          </p>
-          <div class="showbottom">
-            <ul>
-              <li class="card" v-for="watchCom in watches" :key="watchCom._id">
-                <router-link
-                  :to="{
-                    name: 'Detail',
-                    params: {
-                      id: watchCom._id,
-                    },
-                  }"
-                >
-                  <img :src="watchCom.coverImg" alt="" />
-                  <p>
-                    {{ watchCom.name }}
-                  </p>
-                  <p>
-                    <span class="red">{{ watchCom.price }}</span
-                    >元
-                  </p>
-                </router-link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="showthere">
-          <p class="showtitle">
-            <span class="fenlei">耳机</span
-            ><router-link
-              :to="{ name: 'Hot', params: { id: '60923bd00cac5712dc34e5f0' } }"
+            <span class="fenlei">{{ item.name }}</span
+            ><router-link :to="{ name: 'Hot', params: { id: item._id } }"
               >更多&gt;</router-link
             >
           </p>
@@ -100,123 +35,24 @@
             <ul>
               <li
                 class="card"
-                v-for="headsetCom in headset"
-                :key="headsetCom._id"
+                v-for="itemCom in products.find((c) => c.cid == item._id)
+                  .product"
+                :key="itemCom._id"
               >
                 <router-link
                   :to="{
                     name: 'Detail',
                     params: {
-                      id: headsetCom._id,
+                      id: itemCom._id,
                     },
                   }"
                 >
-                  <img :src="headsetCom.coverImg" alt="" />
+                  <img :src="itemCom.coverImg" alt="" />
                   <p>
-                    {{ headsetCom.name }}
+                    {{ itemCom.name }}
                   </p>
                   <p>
-                    <span class="red">{{ headsetCom.price }}</span
-                    >元
-                  </p>
-                </router-link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="showthere">
-          <p class="showtitle">
-            <span class="fenlei">电视</span
-            ><router-link
-              :to="{ name: 'Hot', params: { id: '60923bd00cac5712dc34e5f1' } }"
-              >更多&gt;</router-link
-            >
-          </p>
-          <div class="showbottom">
-            <ul>
-              <li class="card" v-for="tvCom in tv" :key="tvCom._id">
-                <router-link
-                  :to="{
-                    name: 'Detail',
-                    params: {
-                      id: tvCom._id,
-                    },
-                  }"
-                >
-                  <img :src="tvCom.coverImg" alt="" />
-                  <p>
-                    {{ tvCom.name }}
-                  </p>
-                  <p>
-                    <span class="red">{{ tvCom.price }}</span
-                    >元
-                  </p>
-                </router-link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="showthere">
-          <p class="showtitle">
-            <span class="fenlei">灯具</span
-            ><router-link
-              :to="{ name: 'Hot', params: { id: '60923bd00cac5712dc34e5f2' } }"
-              >更多&gt;</router-link
-            >
-          </p>
-          <div class="showbottom">
-            <ul>
-              <li class="card" v-for="lightCom in light" :key="lightCom._id">
-                <router-link
-                  :to="{
-                    name: 'Detail',
-                    params: {
-                      id: lightCom._id,
-                    },
-                  }"
-                >
-                  <img :src="lightCom.coverImg" alt="" />
-                  <p>
-                    {{ lightCom.name }}
-                  </p>
-                  <p>
-                    <span class="red">{{ lightCom.price }}</span
-                    >元
-                  </p>
-                </router-link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="showthere">
-          <p class="showtitle">
-            <span class="fenlei">口红</span
-            ><router-link
-              :to="{ name: 'Hot', params: { id: '60923bd00cac5712dc34e5f3' } }"
-              >更多&gt;</router-link
-            >
-          </p>
-          <div class="showbottom">
-            <ul>
-              <li
-                class="card"
-                v-for="lipstickCom in lipstick"
-                :key="lipstickCom._id"
-              >
-                <router-link
-                  :to="{
-                    name: 'Detail',
-                    params: {
-                      id: lipstickCom._id,
-                    },
-                  }"
-                >
-                  <img :src="lipstickCom.coverImg" alt="" />
-                  <p>
-                    {{ lipstickCom.name }}
-                  </p>
-                  <p>
-                    <span class="red">{{ lipstickCom.price }}</span
+                    <span class="red">{{ itemCom.price }}</span
                     >元
                   </p>
                 </router-link>
@@ -241,37 +77,19 @@ export default {
     return {
       list: [],
       categories: [],
-      phone: [],
-      watches: [],
-      headset: [],
-      tv: [],
-      light: [],
-      lipstick: [],
+      products: [],
     };
   },
-  created() {
-    loadCategories().then((res) => {
+  async created() {
+    await loadCategories().then((res) => {
+      console.log(res);
       this.categories = res.categories;
     });
-    loadProducts(1, '608a2219f24aa142ecf807ee').then((res) => {
-      this.phone = res.products;
-      
+    this.categories.forEach(async (res) => {
+      const comRes = await loadProducts(1, res._id);
+      this.products.push({ cid: res._id, product: comRes.products });
     });
-    loadProducts(1, '60923bd00cac5712dc34e5ef').then((res) => {
-      this.watches = res.products;
-    });
-    loadProducts(1, '60923bd00cac5712dc34e5f0').then((res) => {
-      this.headset = res.products;
-    });
-    loadProducts(1, '60923bd00cac5712dc34e5f1').then((res) => {
-      this.tv = res.products;
-    });
-    loadProducts(1, '60923bd00cac5712dc34e5f2').then((res) => {
-      this.light = res.products;
-    });
-    loadProducts(1, '60923bd00cac5712dc34e5f3').then((res) => {
-      this.lipstick = res.products;
-    });
+    // console.log(this.products);
   },
   mounted() {
     var getPic = async () => {
