@@ -2,11 +2,7 @@
   <!-- 用户登录 -->
   <div>
     <router-link to="/">
-      <img
-        src="../assets/logo.jpg"
-        alt=""
-        style="width:35%;display:block;margin: 1rem auto;"
-      />
+      <img src="../assets/logo.jpg" alt="" style="width:35%;display:block;margin: 1rem auto;"/>
     </router-link>
     <van-form @submit="onSubmit">
       <van-field
@@ -30,21 +26,21 @@
         >
       </div>
     </van-form>
-    <router-link :to="{ name: 'Register' }">没有账号，我要注册</router-link>
-    <!--  <h1>请登录</h1>
+    <router-link :to="{name:'Register'}">没有账号，我要注册</router-link>
+   <!--  <h1>请登录</h1>
     <p><span>用户名：</span><input type="text" v-model="username" /></p>
     <p><span>密码：</span><input type="password" v-model="password" /></p>
     <button class="btn" @click="loadHandle">
       登录
     </button>
     <router-link to="/register" class="more">还没账号，我要注册</router-link>-->
-  </div>
+  </div> 
 </template>
 
 <script>
-import { Toast } from 'vant';
-import { setToken } from '../utils/tools';
-import { login } from '../services/auth';
+import {Toast} from 'vant';
+import {setToken} from "../utils/tools"
+import {login} from '../services/auth'
 export default {
   name: 'Login',
   data() {
@@ -54,15 +50,19 @@ export default {
     };
   },
   methods: {
-    async onSubmit(values) {
-      const res = await login(values);
-      if (res.code === 'success') {
+    async onSubmit(values){
+      const res=await login(values);
+      if(res.code==="success"){
         setToken(res.token);
-        this.$router.push('Home');
-      } else {
-        Toast.fail(res.message);
+        this.$router.push({
+          name:"User"
+        }
+          
+        )
+      }else{
+        Toast.fail(res.message)
       }
-    },
+    }
   },
 };
 </script>
