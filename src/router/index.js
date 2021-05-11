@@ -120,8 +120,8 @@ router.beforeEach((to, from, next) => {
   }
 });
 router.afterEach((to, from) => {
-  console.log(to); //到哪去
-  console.log(from); //从哪来
+  to,
+  form;
   console.log("路由跳转之后执行");
 });
 
