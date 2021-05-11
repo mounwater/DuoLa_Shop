@@ -1,112 +1,154 @@
 <template>
   <!-- 购物车 -->
-
-  <div class="about">
-    <van-cell-group>
-      <van-cell v-for="(i, index) in carts" :key="i._id">
-        <van-checkbox v-model="i.checked"></van-checkbox>
-        <van-card
-          :price="i.product.price"
-          :title="i.product.name"
-          :thumb="i.product.coverImg"
+  <div>
+    <hr />
+    <div v-for="item in list" :key="item._id" class="commidity">
+      <img :src="item.product.coverImg" alt="" />
+      <div class="cartInfo">
+        <p class="comName">{{ item.product.name }}</p>
+        <span>单价{{ item.product.price }}元</span
+        ><span class="sum"
+          >单个商品总价{{ item.quantity * item.product.price }}元</span
         >
-          <template #footer>
-            <span class="singlePrice"
-              >合计:{{ i.product.price * i.quantity }}</span
-            >
-            <div class="th">
-              <van-button
-                size="small"
-                @click="changeCartData(i, -1, index)"
-                icon="minus"
-                type="danger"
-              ></van-button>
-              <span class="num">{{ i.quantity }}</span>
-              <van-button
-                @click="changeCartData(i, 1, index)"
-                size="small"
-                icon="plus"
-                type="danger"
-              ></van-button>
-            </div>
-          </template>
-        </van-card>
-      </van-cell>
-    </van-cell-group>
-    <van-submit-bar
-      :price="sumprice * 100"
-      button-text="提交订单"
-      @submit="onSubmit"
-    >
-      <van-checkbox v-model="checkedAll">全选</van-checkbox>
-      <template #tip>
-        你的收货地址不支持同城送,
-        <span @click="onClickEditAddress" style="color:blue;">修改地址</span>
-      </template>
-    </van-submit-bar>
+        <p class="comCount">
+          数量<span class="minus" @click="minus(item.product._id)">-</span
+          >{{ item.quantity
+          }}<span class="adds" @click="adds(item.product._id)">+</span>
+          <button @click="delCart(item._id)">删除</button>
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { loadCarts, addToCart } from "../services/carts";
+import axios from 'axios';
 export default {
+  name: 'Cart',
   data() {
     return {
-      carts: [],
+      shopCount: '',
+      list: {},
     };
   },
   async created() {
-    this.loadData();
+    await this.getCart();
   },
   methods: {
-    async changeCartData(p, q, index) {
-      const endCount = p.quantity + q;
-      if (endCount > 0) {
-        await addToCart(p.product._id, q);
-        this.carts[index].quantity += q;
-      }
+    delCart(id) {
+      axios
+        .delete('http://localhost:3009/api/v1/shop_carts/' + id, {
+          headers: {
+            authorization: 'bearer ' + sessionStorage.getItem('token'),
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          this.getCart();
+        });
     },
-    async loadData() {
-      const res = await loadCarts();
-      this.carts = res.map((item) => ({ ...item, checked: false }));
-      console.log(this.carts);
+    getCart() {
+      axios
+        .get('http://localhost:3009/api/v1/shop_carts', {
+          headers: {
+            authorization: 'bearer ' + sessionStorage.getItem('token'),
+          },
+        })
+        .then((res) => {
+          this.list = res.data;
+          console.log(this.list);
+          this.shopCount = this.list.length;
+          // console.log(this.shopCount);
+          this.eventBus.$emit('buyed', this.shopCount);
+        });
     },
-    onSubmit() {},
-    onClickEditAddress() {},
-  },
-  computed: {
-    checkedAll: {
-      set(v) {
-        this.carts.forEach((item) => (item.checked = v));
-      },
-      get() {
-        return this.carts.every((item) => item.checked);
-      },
+    minus(id) {
+      this.list.forEach((item) => {
+        if (item.product._id == id) {
+          if (item.quantity > 1) {
+            item.quantity--;
+            axios
+              .post(
+                'http://localhost:3009/api/v1/shop_carts',
+                {
+                  product: id,
+                  quantity: -1,
+                },
+                {
+                  headers: {
+                    authorization: 'bearer ' + sessionStorage.getItem('token'),
+                  },
+                }
+              )
+              .then((res) => {
+                console.log(res);
+              });
+          }
+        }
+      });
     },
-    sumprice() {
-      return this.carts
-        .filter((item) => item.checked)
-        .reduce((pre, cur) => pre + cur.product.price * cur.quantity, 0);
+    adds(id) {
+      console.log(id);
+      this.list.forEach((item) => {
+        if (item.product._id == id) {
+          if (item.quantity >= 1) {
+            item.quantity++;
+            axios
+              .post(
+                'http://localhost:3009/api/v1/shop_carts',
+                {
+                  product: id,
+                  quantity: 1,
+                },
+                {
+                  headers: {
+                    authorization: 'bearer ' + sessionStorage.getItem('token'),
+                  },
+                }
+              )
+              .then((res) => {
+                console.log(res);
+              });
+          }
+        }
+      });
     },
   },
 };
 </script>
 
 <style scoped>
-.van-card__footer {
-  overflow: hidden;
+.commidity img {
+  width: 18vw;
 }
-.th {
+.commidity {
+  margin-top: 1rem;
   display: flex;
-  float: right;
+  justify-content: flex-start;
+  border-top: 1px solid gray;
 }
-.singlePrice {
-  float: left;
-  line-height: 32px;
-  font-size: 15px;
+.cartInfo {
+  flex: 1;
+  height: 10vh;
+  text-align: left;
 }
-.num {
-  margin-left: 3px;
-  line-height: 32px;
+/* .comCount {
+  margin-top: 1rem;
+} */
+.minus,
+.adds {
+  display: inline-block;
+  width: 2rem;
+  background: #4473c2;
+  font-size: 1rem;
+  color: white;
+  text-align: center;
+}
+.sum {
+  margin-left: 2rem;
+}
+.comName {
+  font-weight: bold;
+  text-align: center;
 }
 </style>

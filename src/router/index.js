@@ -89,15 +89,9 @@ const routes = [
     component: () => import('@/views/do/ChangeUserInfo'),
   },
   {
-<<<<<<< HEAD
     path: '/editor',
     name: 'Editor',
     component: () => import('@/views/do/Editor'),
-=======
-    path: '/changeaddress',
-    name: 'ChangeAddress',
-    component: () => import('@/views/do/ChangeAddress'),
->>>>>>> 43c7d6bbf41ce33e89f0dee8d04cc136b54fafe7
   },
   {
     path: '/addaddress',
@@ -129,4 +123,5 @@ router.afterEach((to, from) => {
   console.log(from); //从哪来
   console.log('路由跳转之后执行');
 });
+
 export default router;
