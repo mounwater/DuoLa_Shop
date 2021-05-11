@@ -1,102 +1,102 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from "vue";
+import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
-Vue.filter('dalImg', (v) => {
+Vue.filter("dalImg", (v) => {
   if (v) {
-    if (v.startsWith('http')) {
+    if (v.startsWith("http")) {
       return v;
     } else {
       return `http://localhost:3009${v}`;
     }
   } else {
-    return 'https://img0.baidu.com/it/u=1262235066,623940843&fm=26&fmt=auto&gp=0.jpg';
+    return "https://img0.baidu.com/it/u=1262235066,623940843&fm=26&fmt=auto&gp=0.jpg";
   }
 });
 
 // @ 表示src目录
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: () => import('@/views/Home'),
+    path: "/",
+    name: "Home",
+    component: () => import("@/views/Home"),
   },
 
   {
-    path: '/login',
-    name: 'Login',
+    path: "/login",
+    name: "Login",
     meta: {
       hideNav: true,
     },
-    component: () => import('@/views/Login'),
+    component: () => import("@/views/Login"),
   },
   {
-    path: '/register',
-    name: 'Register',
+    path: "/register",
+    name: "Register",
     meta: {
       hideNav: true,
     },
-    component: () => import('@/views/Register'),
+    component: () => import("@/views/Register"),
   },
   {
-    path: '/hot',
-    name: 'Hot',
-    component: () => import('@/views/Hot'),
+    path: "/hot",
+    name: "Hot",
+    component: () => import("@/views/Hot"),
   },
   {
-    path: '/detail',
-    name: 'Detail',
+    path: "/detail",
+    name: "Detail",
     meta: {
       hideNav: true,
     },
-    component: () => import('@/views/Detail'),
+    component: () => import("@/views/Detail"),
   },
   {
-    path: '/cart',
-    name: 'Cart',
+    path: "/cart",
+    name: "Cart",
     meta: {
       needLogin: true,
     },
-    component: () => import('@/views/Cart'),
+    component: () => import("@/views/Cart"),
   },
   {
-    path: '/user',
-    name: 'User',
+    path: "/user",
+    name: "User",
     meta: {
       needLogin: true,
     },
-    component: () => import('@/views/User'),
+    component: () => import("@/views/User"),
   },
   {
-    path: '/order',
-    name: 'Order',
-    component: () => import('@/views/Order'),
+    path: "/order",
+    name: "Order",
+    component: () => import("@/views/Order"),
   },
   {
-    path: '/orderdetail',
-    name: 'OrderDetail',
-    component: () => import('@/views/OrderDetail'),
+    path: "/orderdetail",
+    name: "OrderDetail",
+    component: () => import("@/views/OrderDetail"),
   },
   {
-    path: '/address',
-    name: 'Address',
-    component: () => import('@/views/Address'),
+    path: "/address",
+    name: "Address",
+    component: () => import("@/views/Address"),
   },
   {
-    path: '/changeuserinfo',
-    name: 'ChangeUserInfo',
-    component: () => import('@/views/do/ChangeUserInfo'),
+    path: "/changeuserinfo",
+    name: "ChangeUserInfo",
+    component: () => import("@/views/do/ChangeUserInfo"),
   },
   {
-    path: '/changeaddress',
-    name: 'ChangeAddress',
-    component: () => import('@/views/do/ChangeAddress'),
+    path: "/editor",
+    name: "Editor",
+    component: () => import("@/views/do/Editor"),
   },
   {
-    path: '/addaddress',
-    name: 'AddAddress',
-    component: () => import('@/views/do/AddAddress'),
+    path: "/addaddress",
+    name: "AddAddress",
+    component: () => import("@/views/do/AddAddress"),
   },
 ];
 
@@ -108,11 +108,11 @@ router.beforeEach((to, from, next) => {
   console.log(to); //到哪去
   console.log(from); //从哪来
   if (to.meta.needLogin) {
-    if (sessionStorage.getItem('token')) {
+    if (sessionStorage.getItem("token")) {
       next();
     } else {
       next({
-        name: 'Login',
+        name: "Login",
       });
     }
   } else {
@@ -122,7 +122,7 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from) => {
   console.log(to); //到哪去
   console.log(from); //从哪来
-  console.log('路由跳转之后执行');
+  console.log("路由跳转之后执行");
 });
 
 export default router;
