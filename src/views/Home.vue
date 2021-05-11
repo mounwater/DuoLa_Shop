@@ -253,8 +253,9 @@ export default {
     loadCategories().then((res) => {
       this.categories = res.categories;
     });
-    loadProducts(1, '60923bd00cac5712dc34e5ee').then((res) => {
+    loadProducts(1, '608a2219f24aa142ecf807ee').then((res) => {
       this.phone = res.products;
+      
     });
     loadProducts(1, '60923bd00cac5712dc34e5ef').then((res) => {
       this.watches = res.products;

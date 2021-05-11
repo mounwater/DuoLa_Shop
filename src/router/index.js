@@ -125,4 +125,5 @@ router.afterEach((to, from) => {
   console.log('路由跳转之后执行');
 });
 
+
 export default router;

@@ -54,8 +54,10 @@ export default {
       const res=await login(values);
       if(res.code==="success"){
         setToken(res.token);
-        this.$router.push(
-          "Home"
+        this.$router.push({
+          name:"User"
+        }
+          
         )
       }else{
         Toast.fail(res.message)
