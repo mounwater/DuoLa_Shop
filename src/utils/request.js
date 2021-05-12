@@ -13,7 +13,7 @@ const instance = axios.create({
 // 全局请求拦截，请求发起之前会执行的一个函数
 // Add a request interceptor
 instance.interceptors.request.use(
-  function(config) {
+  function (config) {
     NProgress.start(); // 启动loading
     // 此处设置全局请求拦截的配置信息，可以在这个位置添加请求头
     // Do something before request is sent
@@ -22,7 +22,7 @@ instance.interceptors.request.use(
     )}`;
     return config;
   },
-  function(error) {
+  function (error) {
     // Do something with request error
     return Promise.reject(error);
   }
@@ -31,25 +31,25 @@ instance.interceptors.request.use(
 // 全局响应拦截，请求完成之后会执行的一个函数
 // Add a response interceptor
 instance.interceptors.response.use(
-  function(response) {
+  function (response) {
     NProgress.done(); // 删除loading效果
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response.data;
   },
-  function(error) {
-    NProgress.done();
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    // console.dir(error); //
-    // 如果接口返回的状态码是401，跳转到登录页
-    if (error.response.status && error.response.status === 401) {
-      alert('请登录！');
-      window.location.href = '/';
-    } else {
-      return Promise.reject(error);
-    }
-  }
+  // function (error) {
+  //   NProgress.done();
+  // Any status codes that falls outside the range of 2xx cause this function to trigger
+  // Do something with response error
+  // console.dir(error); //
+  // 如果接口返回的状态码是401，跳转到登录页
+  // if (error.response.status && error.response.status === 401) {
+  //   alert('请登录！');
+  //   window.location.href = '/';
+  // } else {
+  // return Promise.reject(error);
+  // }
+  // }
 );
 
 // config中的params表示url中传递的参数

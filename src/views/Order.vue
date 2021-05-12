@@ -4,9 +4,14 @@
   <div class="orderbox">
     <h1>订单列表</h1>
     <hr />
-    <van-dropdown-menu>
-      <van-dropdown-item v-model="value1" :options="option1" @change="change(value1)" />
-      <van-dropdown-item v-model="value2" :options="option2" />
+    <van-dropdown-menu class="upmenu">
+      <van-dropdown-item
+        v-model="value1"
+        class="inmenu"
+        :options="option1"
+        @change="change(value1)"
+      />
+      <van-dropdown-item v-model="value2" class="inmenu" :options="option2" />
     </van-dropdown-menu>
     <div class="tableTitle">
       <van-row>
@@ -154,9 +159,15 @@ export default {
 </script>
 
 <style scoped>
+.upmenu {
+  background: rgba(255, 255, 255, 0.5);
+}
+.upmenu .inmenu {
+  background: rgba(255, 255, 255, 0.5);
+}
 .tableTitle {
   margin-top: 2px;
-  background: rgb(144, 209, 209);
+  background: rgba(144, 209, 209, 0.5);
   box-shadow: 0 2px rgb(235, 228, 228);
 }
 .dyge {
