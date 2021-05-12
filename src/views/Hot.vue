@@ -30,8 +30,8 @@
 <script>
 import { loadProducts } from '../services/products';
 import { addToCart } from '../services/carts';
-import Toast from 'vant';
 import { mapActions } from 'vuex';
+import { Toast } from 'vant';
 export default {
   created() {
     this.loadData();

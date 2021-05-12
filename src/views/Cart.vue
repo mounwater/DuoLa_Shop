@@ -52,10 +52,10 @@
 </template>
 
 <script>
-import { loadCarts, addToCart } from "../services/carts";
-import { delCarts } from "../services/carts";
-import { tjdd } from "../services/carts";
-import { cxaddress } from "../services/carts";
+import { loadCarts, addToCart } from '../services/carts';
+import { delCarts } from '../services/carts';
+import { tjdd } from '../services/carts';
+import { cxaddress } from '../services/carts';
 export default {
   data() {
     return {
@@ -119,7 +119,7 @@ export default {
       ).then((res) => console.log(res.code));
     },
     onClickEditAddress() {
-      this.$router.push("Address");
+      this.$router.push('Address');
     },
   },
   computed: {
