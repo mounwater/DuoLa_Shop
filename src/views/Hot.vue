@@ -1,11 +1,6 @@
 <template>
   <div class="about">
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
       <van-card
         v-for="i in list"
         :key="i._id"
@@ -15,12 +10,7 @@
         :thumb-link="'/#/detail?id=' + i._id"
       >
         <template #footer>
-          <van-button
-            size="small"
-            icon="cart-o"
-            type="danger"
-            @click="addCartHandle(i._id)"
-          ></van-button>
+          <van-button size="small" icon="cart-o" type="danger" @click="addCartHandle(i._id)"></van-button>
           <!-- <van-button size="mini">按钮</van-button> -->
         </template>
       </van-card>
