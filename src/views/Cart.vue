@@ -2,7 +2,7 @@
   <!-- 购物车 -->
 
   <div class="about">
-    <van-cell-group style="padding-bottom:20px;">
+    <van-cell-group style="padding-bottom:70px;">
       <van-cell v-for="(i, index) in carts" :key="i._id">
         <van-checkbox v-model="i.checked"></van-checkbox>
         <van-card
@@ -41,6 +41,7 @@
       :price="sumprice * 100"
       button-text="提交订单"
       @submit="onSubmit"
+      style="bottom:50px"
     >
       <van-checkbox v-model="checkedAll" class="">全选</van-checkbox>
       <template #tip>
@@ -56,6 +57,7 @@ import { loadCarts, addToCart } from "../services/carts";
 import { delCarts } from "../services/carts";
 import { tjdd } from "../services/carts";
 import { cxaddress } from "../services/carts";
+import { Toast } from "vant";
 export default {
   data() {
     return {
@@ -79,7 +81,7 @@ export default {
     async loadData() {
       const res = await loadCarts();
       this.carts = res.map((item) => ({ ...item, checked: false }));
-      console.log(this.carts);
+      // console.log(this.carts);
     },
     async address() {
       const res = await cxaddress();
@@ -87,27 +89,32 @@ export default {
       // console.log(res.addresses.filter((item) => item.isDefault == true));
       // this.location.forEach((item) => console.log(item.address));
     },
-    del(id, index) {
-      delCarts(id);
-      this.carts[index].checked = false;
-      this.carts.splice(index, 1);
-      if (this.carts.length == 0) {
+    async del(id) {
+      await delCarts(id).then(this.loadData());
+
+      /* this.carts[index].checked = false;
+      this.carts.splice(index, 1); */
+
+      /*  if (this.carts.length == 0) {
         this.$refs.dom.checked = false;
-      }
-      console.log(this.$refs.dom.length);
+      } */
+      // console.log(this.$refs.dom.length);
     },
     onSubmit() {
-      this.carts
+      if(this.carts.length){
+        this.carts
         .filter((item) => item.checked)
-        .forEach((item) =>
+        .forEach((item) => {
           this.carted.push({
             quantity: item.quantity,
             product: item.product._id,
             price: item.product.price,
-          })
-        );
+          });
+          this.del(item._id);
+          Toast.success('提交订单成功！');
+        });
 
-      console.log(this.carted);
+      // console.log(this.carted);
       /* this.location.forEach((item) =>
         tjdd(item.receiver, item.regions, item.address)
       ); */
@@ -117,6 +124,10 @@ export default {
         this.location[0].address,
         this.carted
       ).then((res) => console.log(res.code));
+      }else{
+        Toast.fail('购物车为空')
+      }
+      
     },
     onClickEditAddress() {
       this.$router.push("Address");
