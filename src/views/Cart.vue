@@ -91,8 +91,16 @@ export default {
       // console.log(this.carts);
     },
     async address() {
-      const res = await cxaddress();
-      this.location = res.addresses.filter((item) => item.isDefault == true);
+      const res = await cxaddress();     
+      if(res.addresses.length==0){
+        Toast.fail('请添加地址后重试')
+        this.$router.push({
+          name:'Address'
+        })
+      }else{
+        this.location = res.addresses.filter((item) => item.isDefault == true);
+      }
+      
       // console.log(res.addresses.filter((item) => item.isDefault == true));
       // this.location.forEach((item) => console.log(item.address));
     },
