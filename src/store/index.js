@@ -14,10 +14,15 @@ export default new Vuex.Store({
   },
   actions: {
     async updateAsync(context, payload) {
-      const res = await loadCarts();
-      // console.log(res);
-      payload = { newCount: res.length };
-      context.commit('upDate', payload);
+      if (sessionStorage.getItem('token')) {
+        const res = await loadCarts();
+        // console.log(res);
+        payload = { newCount: res.length };
+        context.commit('upDate', payload);
+      } else {
+        payload = { newCount: 0 };
+        context.commit('upDate', payload);
+      }
     },
   },
   modules: {},

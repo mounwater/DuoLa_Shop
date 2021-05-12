@@ -45,6 +45,7 @@
 import { Toast } from 'vant';
 import { setToken } from '../utils/tools';
 import { login } from '../services/auth';
+import { mapActions } from 'vuex';
 export default {
   name: 'Login',
   data() {
@@ -58,11 +59,15 @@ export default {
       const res = await login(values);
       if (res.code === 'success') {
         setToken(res.token);
-        this.$router.push('Home');
+        this.updateAsync();
+        this.$router.push({
+          name: 'Home',
+        });
       } else {
         Toast.fail(res.message);
       }
     },
+    ...mapActions(['updateAsync']),
   },
 };
 </script>
