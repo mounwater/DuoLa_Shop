@@ -37,19 +37,19 @@ instance.interceptors.response.use(
     // Do something with response data
     return response.data;
   },
-  // function (error) {
-  //   NProgress.done();
-  // Any status codes that falls outside the range of 2xx cause this function to trigger
-  // Do something with response error
-  // console.dir(error); //
-  // 如果接口返回的状态码是401，跳转到登录页
-  // if (error.response.status && error.response.status === 401) {
-  //   alert('请登录！');
-  //   window.location.href = '/';
-  // } else {
-  // return Promise.reject(error);
-  // }
-  // }
+  function (error) {
+    NProgress.done();
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    // console.dir(error); //
+    // 如果接口返回的状态码是401，跳转到登录页
+    if (error.response.status && error.response.status === 401) {
+      alert('请登录！');
+      window.location.href = '/';
+    } else {
+      return Promise.reject(error);
+    }
+  }
 );
 
 // config中的params表示url中传递的参数

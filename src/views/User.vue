@@ -38,6 +38,7 @@
 
 <script>
 import axios from 'axios';
+import { mapActions } from 'vuex';
 export default {
   name: 'User',
   data() {
@@ -68,6 +69,7 @@ export default {
         this.eventBus.$emit('buyed', 0);
       }
     },
+    ...mapActions(['updateAsync']),
   },
 };
 </script>

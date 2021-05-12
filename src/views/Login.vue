@@ -2,11 +2,7 @@
   <!-- 用户登录 -->
   <div>
     <router-link to="/">
-      <img
-        src="../assets/logo.jpg"
-        alt=""
-        style="width:35%;display:block;margin: 1rem auto;"
-      />
+      <img src="../assets/logo.jpg" alt style="width:35%;display:block;margin: 1rem auto;" />
     </router-link>
     <van-form @submit="onSubmit">
       <van-field
@@ -25,9 +21,7 @@
         :rules="[{ required: true, message: '请填写密码' }]"
       />
       <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit"
-          >提交</van-button
-        >
+        <van-button round block type="info" native-type="submit">提交</van-button>
       </div>
     </van-form>
     <router-link :to="{ name: 'Register' }">没有账号，我要注册</router-link>

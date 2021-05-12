@@ -4,14 +4,13 @@
       <van-card
         v-for="i in list"
         :key="i._id"
-        :num="i.quantity"
         :price="i.price"
         :title="i.name"
         :thumb="i.coverImg"
         :thumb-link="'/#/detail?id=' + i._id"
       >
         <template #footer>
-          <van-button size="small" icon="cart-o" type="danger"></van-button>
+          <van-button size="small" icon="cart-o" type="danger" @click="addCartHandle(i._id)"></van-button>
           <!-- <van-button size="mini">按钮</van-button> -->
         </template>
       </van-card>
@@ -48,9 +47,29 @@ export default {
       this.loading = true; // 设置加载中为true
       this.loadData(); // 开始请求数据
     },
+    async addCartHandle(id) {
+      // console.log(id);
+      const res = await addToCart(id, 1);
+      // console.log(res);
+      if (res.code === 'success') {
+        this.updateAsync();
+        Toast.success('添加购物车成功！');
+      } else {
+        alert('添加失败！');
+      }
+    },
+    ...mapActions(['updateAsync']),
   },
   mounted: {
 
   }
 };
 </script>
+<style scoped>
+.van-card__footer {
+  text-align: center;
+  position: absolute;
+  top: 62%;
+  right: 6%;
+}
+</style>
