@@ -89,11 +89,11 @@ export default {
       // console.log(res.addresses.filter((item) => item.isDefault == true));
       // this.location.forEach((item) => console.log(item.address));
     },
-    async del(id) {
-      await delCarts(id).then(this.loadData());
-
-      /* this.carts[index].checked = false;
-      this.carts.splice(index, 1); */
+    async del(id, index) {
+      // await delCarts(id).then(this.loadData());
+      delCarts(id);
+      this.carts[index].checked = false;
+      this.carts.splice(index, 1);
 
       /*  if (this.carts.length == 0) {
         this.$refs.dom.checked = false;
@@ -101,33 +101,36 @@ export default {
       // console.log(this.$refs.dom.length);
     },
     onSubmit() {
-      if(this.carts.length){
-        this.carts
-        .filter((item) => item.checked)
-        .forEach((item) => {
-          this.carted.push({
-            quantity: item.quantity,
-            product: item.product._id,
-            price: item.product.price,
-          });
-          this.del(item._id);
-          Toast.success('提交订单成功！');
-        });
+      if (this.carts.length) {
 
-      // console.log(this.carted);
-      /* this.location.forEach((item) =>
+        this.carts
+          .filter((item) => item.checked)
+          .forEach((item) => {
+            this.carted.push({
+              quantity: item.quantity,
+              product: item.product._id,
+              price: item.product.price,
+            });
+            this.del(item._id,this.carts.indexOf(item))
+            // this.del(item._id);
+            Toast.success("提交订单成功！");
+          });
+        /* this.carts.filter((item)=>item.checked).forEach((item)=>{
+          
+        }) */
+        // console.log(this.carted);
+        /* this.location.forEach((item) =>
         tjdd(item.receiver, item.regions, item.address)
       ); */
-      tjdd(
-        this.location[0].receiver,
-        this.location[0].regions,
-        this.location[0].address,
-        this.carted
-      ).then((res) => console.log(res.code));
-      }else{
-        Toast.fail('购物车为空')
+        tjdd(
+          this.location[0].receiver,
+          this.location[0].regions,
+          this.location[0].address,
+          this.carted
+        ).then((res) => console.log(res.code));
+      } else {
+        Toast.fail("购物车为空");
       }
-      
     },
     onClickEditAddress() {
       this.$router.push("Address");
