@@ -14,12 +14,6 @@ export default new Vuex.Store({
   },
   actions: {
     async updateAsync(context, payload) {
-<<<<<<< HEAD
-      const res = await loadCarts();
-      // console.log(res);
-      payload = { newCount: res.length };
-      context.commit('upDate', payload);
-=======
       if (sessionStorage.getItem('token')) {
         const res = await loadCarts();
         // console.log(res);
@@ -29,7 +23,6 @@ export default new Vuex.Store({
         payload = { newCount: 0 };
         context.commit('upDate', payload);
       }
->>>>>>> c429ea0cf8f3ebcb7bfadaeffc64a7a2104d52da
     },
   },
   modules: {},
