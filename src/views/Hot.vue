@@ -19,7 +19,9 @@
 </template>
 <script>
 import { loadProducts } from '../services/products'
-
+import { addToCart } from '../services/carts';
+import { mapActions } from 'vuex';
+import { Toast } from 'vant';
 
 export default {
   created() {

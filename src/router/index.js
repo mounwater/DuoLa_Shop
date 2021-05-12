@@ -74,9 +74,6 @@ const routes = [
   {
     path: '/order',
     name: 'Order',
-    mata: {
-      hideNav: true,
-    },
     component: () => import('@/views/Order'),
   },
   {

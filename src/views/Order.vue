@@ -24,8 +24,9 @@
       </van-row>
     </div>
     <div class="tableTitle">
-      <van-row :key="index" v-for="(item,index) in orders" @click="handle(item.id)">
-        <van-col class="dyge" span="4" :key="item" v-for="(item) in orders[index]">{{item}}</van-col>
+      <van-row :key="index" v-for="(item,index) in orders" @click="toOrderList(item.id)">
+        <!-- <van-col class="dyge" span="4" :key="item" v-for="(item) in orders[index]">{{item}}</van-col> -->
+        <van-col class="dyge" span="4">状态</van-col>
       </van-row>
     </div>
   </div>
@@ -34,6 +35,7 @@
 </template>
 <script type="text/javascript">
 import Vue from 'vue'
+import { orderLists } from '../services/orders';
 // 日期格式化
 Vue.filter('format', function (value, arg) {
   function dateFormat(date, format) {
@@ -81,8 +83,8 @@ export default {
       value: 3,
       value1: 1,
       value2: 't',
-      flag: false,
-      isShow: false,
+      // flag: false,
+      // isShow: false,
       option1: [
         { text: '全部订单', value: 0 },
         { text: '已完成', value: 1 },
@@ -91,52 +93,15 @@ export default {
       option2: [
         { text: '时间排序', value: 't' },
       ],
-      orders: [{
-        id: 1,
-        name: '小板凳',
-        genre: '乐园',
-        transport: '飞机',
-        date: '2021-05-11',
-        states: '未完成'
-      }, {
-        id: 2,
-        name: '外卖',
-        genre: '美食',
-        transport: '飞碟',
-        date: '2021-05-11',
-        states: '完成'
-      }, {
-        id: 3,
-        name: 'vue案例',
-        genre: '图书',
-        transport: '火箭',
-        date: '2021-05-11',
-        states: '完成'
-      },
-      {
-        id: 4,
-        name: '一丝秀发',
-        genre: '奢侈品',
-        transport: '流星',
-        date: '2021-05-11',
-        states: '未完成'
-      }
-      ]
+      orderLists: []
     }
   },
+  async created() {
+    const o = await orderLists()
+    this.orderLists = o.orderLists
+  },
+
   computed: {
-
-
-    // theState() {
-
-    //   for (let item = 0; item < this.orders.length; item++) {
-
-    //     if (item % 2 == 0) {
-    //       item.states = this.states[0]
-    //     }
-    //   }
-
-    // }
   },
   watch: {
 
@@ -145,15 +110,49 @@ export default {
     }
   },
   methods: {
-    handle(vid) {
-      console.log(vid);
-    },
     change(vval) {
-      // return 
-      // if (vval == 0) {
-      // }
       console.log(vval);
-    }
+    },
+    // async toOrderList(pId) {
+    //   const res = await orderdetail(pId);
+    //   if (res) {
+    //     this.$router.push('orderdetail');
+    //   }
+
+    //   console.log(pId)
+    // }
+  },
+  mounted: {
+    orders: [{
+      id: 1,
+      name: '小板凳',
+      genre: '乐园',
+      transport: '飞机',
+      date: '2021-05-11',
+      states: '未完成'
+    }, {
+      id: 2,
+      name: '外卖',
+      genre: '美食',
+      transport: '飞碟',
+      date: '2021-05-11',
+      states: '完成'
+    }, {
+      id: 3,
+      name: 'vue案例',
+      genre: '图书',
+      transport: '火箭',
+      date: '2021-05-11',
+      states: '完成'
+    },
+    {
+      id: 4,
+      name: '一丝秀发',
+      genre: '奢侈品',
+      transport: '流星',
+      date: '2021-05-11',
+      states: '未完成'
+    }]
   }
 };
 </script>
