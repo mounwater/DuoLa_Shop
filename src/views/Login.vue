@@ -2,7 +2,11 @@
   <!-- 用户登录 -->
   <div>
     <router-link to="/">
-      <img src="../assets/logo.jpg" alt style="width:35%;display:block;margin: 1rem auto;" />
+      <img
+        src="../assets/logo.jpg"
+        alt
+        style="width:35%;display:block;margin: 1rem auto;"
+      />
     </router-link>
     <van-form @submit="onSubmit">
       <van-field
@@ -21,7 +25,9 @@
         :rules="[{ required: true, message: '请填写密码' }]"
       />
       <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">提交</van-button>
+        <van-button round block type="info" native-type="submit"
+          >提交</van-button
+        >
       </div>
     </van-form>
     <router-link :to="{ name: 'Register' }">没有账号，我要注册</router-link>
@@ -39,6 +45,7 @@
 import { Toast } from 'vant';
 import { setToken } from '../utils/tools';
 import { login } from '../services/auth';
+import { mapActions } from 'vuex';
 export default {
   name: 'Login',
   data() {
@@ -52,11 +59,15 @@ export default {
       const res = await login(values);
       if (res.code === 'success') {
         setToken(res.token);
-        this.$router.push('Home');
+        this.updateAsync();
+        this.$router.push({
+          name: 'Home',
+        });
       } else {
         Toast.fail(res.message);
       }
     },
+    ...mapActions(['updateAsync']),
   },
 };
 </script>

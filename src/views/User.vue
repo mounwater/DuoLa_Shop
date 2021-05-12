@@ -10,24 +10,24 @@
     </div>
     <div class="userInfo">
       <img :src="user.avatar | dalImg" class="userPic" />
-      <span>{{user.nickName}}</span>
+      <span>{{ user.nickName }}</span>
     </div>
     <el-card class="box-card">
       <div class="text item">
         <h2>我的订单</h2>
-        <router-link :to="{name:'Order'}">
+        <router-link :to="{ name: 'Order' }">
           <i class="el-icon-arrow-right"></i>
         </router-link>
       </div>
       <div class="text item">
         <h2>收货地址</h2>
-        <router-link :to="{name:'Address'}">
+        <router-link :to="{ name: 'Address' }">
           <i class="el-icon-arrow-right"></i>
         </router-link>
       </div>
       <div class="text item">
         <h2>资料修改</h2>
-        <router-link :to="{name:'ChangeUserInfo'}">
+        <router-link :to="{ name: 'ChangeUserInfo' }">
           <i class="el-icon-arrow-right"></i>
         </router-link>
       </div>
@@ -63,8 +63,9 @@ export default {
   },
   methods: {
     logOut() {
-      if (confirm("确认是否退出登录")) {
+      if (confirm('确认是否退出登录')) {
         sessionStorage.removeItem('token');
+        this.updateAsync();
         this.$router.push('/');
         this.eventBus.$emit('buyed', 0);
       }
