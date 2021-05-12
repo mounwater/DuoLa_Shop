@@ -58,7 +58,7 @@ export default {
   position: absolute;
   /* padding: 0.3rem; */
   text-align: center;
-  background-color: deeppink;
+  background-color: #0093db;
   color: white;
   font-size: 0.6rem;
   border-radius: 50%;

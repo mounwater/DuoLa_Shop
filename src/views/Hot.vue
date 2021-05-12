@@ -30,8 +30,8 @@
 <script>
 import { loadProducts } from '../services/products';
 import { addToCart } from '../services/carts';
-import {Toast} from 'vant';
 import { mapActions } from 'vuex';
+import { Toast } from 'vant';
 export default {
   created() {
     this.loadData();
@@ -46,7 +46,10 @@ export default {
   },
   methods: {
     async loadData() {
-      const res = await loadProducts(this.page, this.$route.params.id);
+      const res = await loadProducts(
+        this.page,
+        this.$route.query.id || this.$route.params.id
+      );
       this.list = [...this.list, ...res.products];
       this.page++;
       this.loading = false; // 设置加载完成

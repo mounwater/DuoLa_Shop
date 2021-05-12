@@ -26,7 +26,7 @@ li {
   height: 50px;
   align-items: center;
   justify-content: space-around;
-  box-shadow: 1px 0 1px;
+  box-shadow: -1px 1px 2px;
 }
 .nav li {
   display: flex;
@@ -38,7 +38,7 @@ li {
   font-size: 0.6rem;
 }
 .nav li.active {
-  color: deeppink;
+  color: #0093db;
 }
 img {
   display: block;
@@ -50,7 +50,7 @@ a {
 .top {
   height: 6vh;
   line-height: 6vh;
-  color: skyblue;
+  color: #0093db;
   display: flex;
   justify-content: center;
   border-bottom: 1px solid gray;

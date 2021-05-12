@@ -17,7 +17,11 @@ export default new Vuex.Store({
       if (sessionStorage.getItem('token')) {
         const res = await loadCarts();
         // console.log(res);
-        payload = { newCount: res.length };
+        let sum = 0;
+        res.forEach((item) => {
+          sum += item.quantity * 1;
+        });
+        payload = { newCount: sum };
         context.commit('upDate', payload);
       } else {
         payload = { newCount: 0 };

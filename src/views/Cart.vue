@@ -45,19 +45,25 @@
     >
       <van-checkbox v-model="checkedAll" class="">全选</van-checkbox>
       <template #tip>
-        你的收货地址不支持同城送,
-        <span @click="onClickEditAddress" style="color:blue;">修改地址</span>
+        <span @click="onClickEditAddress" style="color:blue;">{{
+          '收货人：' +
+            location[0].receiver +
+            '  地址：' +
+            location[0].regions +
+            location[0].address
+        }}</span>
       </template>
     </van-submit-bar>
   </div>
 </template>
 
 <script>
-import { loadCarts, addToCart } from "../services/carts";
-import { delCarts } from "../services/carts";
-import { tjdd } from "../services/carts";
-import { cxaddress } from "../services/carts";
-import { Toast } from "vant";
+import { loadCarts, addToCart } from '../services/carts';
+import { delCarts } from '../services/carts';
+import { tjdd } from '../services/carts';
+import { cxaddress } from '../services/carts';
+import { Toast } from 'vant';
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
@@ -71,6 +77,7 @@ export default {
     this.address();
   },
   methods: {
+    ...mapActions(['updateAsync']),
     async changeCartData(p, q, index) {
       const endCount = p.quantity + q;
       if (endCount > 0) {
@@ -90,8 +97,9 @@ export default {
       // this.location.forEach((item) => console.log(item.address));
     },
     async del(id) {
-      await delCarts(id).then(this.loadData());
-
+      await delCarts(id)
+        .then(this.loadData())
+        .then(this.updateAsync());
       /* this.carts[index].checked = false;
       this.carts.splice(index, 1); */
 
@@ -101,36 +109,35 @@ export default {
       // console.log(this.$refs.dom.length);
     },
     onSubmit() {
-      if(this.carts.length){
+      if (this.carts.length) {
         this.carts
-        .filter((item) => item.checked)
-        .forEach((item) => {
-          this.carted.push({
-            quantity: item.quantity,
-            product: item.product._id,
-            price: item.product.price,
+          .filter((item) => item.checked)
+          .forEach((item) => {
+            this.carted.push({
+              quantity: item.quantity,
+              product: item.product._id,
+              price: item.product.price,
+            });
+            this.del(item._id);
+            Toast.success('提交订单成功！');
           });
-          this.del(item._id);
-          Toast.success('提交订单成功！');
-        });
 
-      // console.log(this.carted);
-      /* this.location.forEach((item) =>
+        // console.log(this.carted);
+        /* this.location.forEach((item) =>
         tjdd(item.receiver, item.regions, item.address)
       ); */
-      tjdd(
-        this.location[0].receiver,
-        this.location[0].regions,
-        this.location[0].address,
-        this.carted
-      ).then((res) => console.log(res.code));
-      }else{
-        Toast.fail('购物车为空')
+        tjdd(
+          this.location[0].receiver,
+          this.location[0].regions,
+          this.location[0].address,
+          this.carted
+        ).then((res) => console.log(res.code));
+      } else {
+        Toast.fail('购物车为空');
       }
-      
     },
     onClickEditAddress() {
-      this.$router.push("Address");
+      this.$router.push('Address');
     },
   },
   computed: {
