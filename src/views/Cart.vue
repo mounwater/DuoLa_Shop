@@ -2,7 +2,7 @@
   <!-- 购物车 -->
 
   <div class="about">
-    <van-cell-group style="padding-bottom:20px;">
+    <van-cell-group style="padding-bottom:70px;">
       <van-cell v-for="(i, index) in carts" :key="i._id">
         <van-checkbox v-model="i.checked"></van-checkbox>
         <van-card
@@ -41,21 +41,29 @@
       :price="sumprice * 100"
       button-text="提交订单"
       @submit="onSubmit"
+      style="bottom:50px"
     >
       <van-checkbox v-model="checkedAll" class="">全选</van-checkbox>
       <template #tip>
-        你的收货地址不支持同城送,
-        <span @click="onClickEditAddress" style="color:blue;">修改地址</span>
+        <span @click="onClickEditAddress" style="color:blue;">{{
+          '收货人：' +
+            location[0].receiver +
+            '  地址：' +
+            location[0].regions +
+            location[0].address
+        }}</span>
       </template>
     </van-submit-bar>
   </div>
 </template>
 
 <script>
-import { loadCarts, addToCart } from "../services/carts";
-import { delCarts } from "../services/carts";
-import { tjdd } from "../services/carts";
-import { cxaddress } from "../services/carts";
+import { loadCarts, addToCart } from '../services/carts';
+import { delCarts } from '../services/carts';
+import { tjdd } from '../services/carts';
+import { cxaddress } from '../services/carts';
+import { Toast } from 'vant';
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
@@ -69,6 +77,7 @@ export default {
     this.address();
   },
   methods: {
+    ...mapActions(['updateAsync']),
     async changeCartData(p, q, index) {
       const endCount = p.quantity + q;
       if (endCount > 0) {
@@ -79,47 +88,66 @@ export default {
     async loadData() {
       const res = await loadCarts();
       this.carts = res.map((item) => ({ ...item, checked: false }));
-      console.log(this.carts);
+      // console.log(this.carts);
     },
     async address() {
-      const res = await cxaddress();
-      this.location = res.addresses.filter((item) => item.isDefault == true);
+      const res = await cxaddress();     
+      if(res.addresses.length==0){
+        Toast.fail('请添加地址后重试')
+        this.$router.push({
+          name:'Address'
+        })
+      }else{
+        this.location = res.addresses.filter((item) => item.isDefault == true);
+      }
+      
       // console.log(res.addresses.filter((item) => item.isDefault == true));
       // this.location.forEach((item) => console.log(item.address));
     },
-    del(id, index) {
+    async del(id, index) {
+      // await delCarts(id).then(this.loadData());
       delCarts(id);
       this.carts[index].checked = false;
       this.carts.splice(index, 1);
-      if (this.carts.length == 0) {
+
+      /*  if (this.carts.length == 0) {
         this.$refs.dom.checked = false;
-      }
-      console.log(this.$refs.dom.length);
+      } */
+      // console.log(this.$refs.dom.length);
     },
     onSubmit() {
-      this.carts
-        .filter((item) => item.checked)
-        .forEach((item) =>
-          this.carted.push({
-            quantity: item.quantity,
-            product: item.product._id,
-            price: item.product.price,
-          })
-        );
-
-      console.log(this.carted);
-      /* this.location.forEach((item) =>
+      if (this.carts.length) {
+        this.carts
+          .filter((item) => item.checked)
+          .forEach((item) => {
+            this.carted.push({
+              quantity: item.quantity,
+              product: item.product._id,
+              price: item.product.price,
+            });
+            this.del(item._id,this.carts.indexOf(item))
+            // this.del(item._id);
+            Toast.success("提交订单成功！");
+          });
+        /* this.carts.filter((item)=>item.checked).forEach((item)=>{
+          
+        }) */
+        // console.log(this.carted);
+        /* this.location.forEach((item) =>
         tjdd(item.receiver, item.regions, item.address)
       ); */
-      tjdd(
-        this.location[0].receiver,
-        this.location[0].regions,
-        this.location[0].address,
-        this.carted
-      ).then((res) => console.log(res.code));
+        tjdd(
+          this.location[0].receiver,
+          this.location[0].regions,
+          this.location[0].address,
+          this.carted
+        ).then((res) => console.log(res.code));
+      } else {
+        Toast.fail("购物车为空");
+      }
     },
     onClickEditAddress() {
-      this.$router.push("Address");
+      this.$router.push('Address');
     },
   },
   computed: {

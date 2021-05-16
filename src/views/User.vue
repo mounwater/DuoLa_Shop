@@ -1,13 +1,6 @@
 <template>
   <!-- 个人中心 -->
   <div>
-    <div class="top" style="padding:0 .2rem;margin-bottom:.5rem">
-      <i class="el-icon-arrow-left"></i>
-      <div>
-        <i class="el-icon-chat-dot-square"></i>
-        <i style="margin-left:1rem" class="el-icon-s-tools"></i>
-      </div>
-    </div>
     <div class="userInfo">
       <img :src="user.avatar | dalImg" class="userPic" />
       <span>{{ user.nickName }}</span>
@@ -76,11 +69,6 @@ export default {
 </script>
 
 <style scoped>
-.top {
-  font-size: 2rem;
-  display: flex;
-  justify-content: space-between;
-}
 img {
   width: 20vw;
   height: 20vw;
