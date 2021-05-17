@@ -82,6 +82,7 @@ export default {
       const endCount = p.quantity + q;
       if (endCount > 0) {
         await addToCart(p.product._id, q);
+        this.updateAsync();
         this.carts[index].quantity += q;
       }
     },
@@ -91,16 +92,16 @@ export default {
       // console.log(this.carts);
     },
     async address() {
-      const res = await cxaddress();     
-      if(res.addresses.length==0){
-        Toast.fail('请添加地址后重试')
+      const res = await cxaddress();
+      if (res.addresses.length == 0) {
+        Toast.fail('请添加地址后重试');
         this.$router.push({
-          name:'Address'
-        })
-      }else{
+          name: 'Address',
+        });
+      } else {
         this.location = res.addresses.filter((item) => item.isDefault == true);
       }
-      
+
       // console.log(res.addresses.filter((item) => item.isDefault == true));
       // this.location.forEach((item) => console.log(item.address));
     },
@@ -125,9 +126,9 @@ export default {
               product: item.product._id,
               price: item.product.price,
             });
-            this.del(item._id,this.carts.indexOf(item))
+            this.del(item._id, this.carts.indexOf(item));
             // this.del(item._id);
-            Toast.success("提交订单成功！");
+            Toast.success('提交订单成功！');
           });
         /* this.carts.filter((item)=>item.checked).forEach((item)=>{
           
@@ -143,7 +144,7 @@ export default {
           this.carted
         ).then((res) => console.log(res.code));
       } else {
-        Toast.fail("购物车为空");
+        Toast.fail('购物车为空');
       }
     },
     onClickEditAddress() {
