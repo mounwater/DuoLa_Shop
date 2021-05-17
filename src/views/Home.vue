@@ -78,19 +78,22 @@ export default {
       list: [],
       categories: [],
       products: [],
+      isIf: false,
     };
   },
-  async created() {
+  created() {},
+  async mounted() {
     await loadCategories().then((res) => {
-      console.log(res);
+      // console.log(res);
       this.categories = res.categories;
     });
-    this.categories.forEach(async (res) => {
+    console.log(this.categories);
+    await this.categories.forEach(async (res) => {
       const comRes = await loadProducts(1, res._id);
       this.products.push({ cid: res._id, product: comRes.products });
     });
-  },
-  mounted() {
+    console.log(this.products);
+    this.isIf = true;
     var getPic = async () => {
       //使用axios调用网易云音乐的banner图接口
       const res = await axios.get('http://net-music.penkuoer.com/banner');
