@@ -15,19 +15,31 @@
     </van-dropdown-menu>
     <div class="tableTitle">
       <van-row>
-        <van-col class="dyge" span="4">编号</van-col>
-        <van-col class="dyge" span="4">产品</van-col>
-        <van-col class="dyge" span="4">类别</van-col>
-        <van-col class="dyge" span="4">运输</van-col>
+        <van-col class="dyge" span="4">订单号</van-col>
+        <van-col class="dyge" span="4">买方</van-col>
+        <van-col class="dyge" span="4">区域</van-col>
+        <van-col class="dyge" span="4">地址</van-col>
+        <van-col class="dyge" span="4">支付</van-col>
         <van-col class="dyge" span="4">时间</van-col>
-        <van-col class="dyge" span="4">状态</van-col>
       </van-row>
     </div>
     <div class="tableTitle">
-      <van-row :key="index" v-for="(item,index) in orders" @click="toOrderList(item.id)">
-        <!-- <van-col class="dyge" span="4" :key="item" v-for="(item) in orders[index]">{{item}}</van-col> -->
-        <van-col class="dyge" span="4">状态</van-col>
+      <van-row :key="index" v-for="(item,index) in orderLists" @click="toOrderList(item._id)">
+        <router-link :to="{name:'OrderDetail',params:{id:item._id}}">
+          <van-col class="dyge one" span="4">{{item._id}}</van-col>
+          <van-col class="dyge two" span="4">{{item.receiver}}</van-col>
+          <van-col class="dyge three" span="4">{{item.regions}}</van-col>
+          <van-col class="dyge four" span="4">{{item.address}}</van-col>
+          <van-col class="dyge five" span="4">{{item.price}}</van-col>
+          <van-col class="dyge six" span="4">{{item.createdAt | format('yyyy-mm-dd')}}</van-col>
+        </router-link>
       </van-row>
+      <van-button class="alldel" type="danger" @click="alldel">全部删除</van-button>
+      <van-button class="oncedel" type="primary" @click="oncedel(val)">
+        删除
+        <!-- <router-link :to="{name:'Order',params:{id:orderLists[val-1]._id}} ">删除</router-link> -->
+      </van-button>
+      <van-field v-model="val" label="操作" placeholder="删除订单请输入一个数字" />
     </div>
   </div>
 
@@ -35,7 +47,10 @@
 </template>
 <script type="text/javascript">
 import Vue from 'vue'
-import { orderLists } from '../services/orders';
+import { orderLists } from '../services/orders'
+// import axios from 'axios';
+// import { oneDel } from '../services/delelist'
+// import axios from 'axios';
 // 日期格式化
 Vue.filter('format', function (value, arg) {
   function dateFormat(date, format) {
@@ -79,7 +94,9 @@ Vue.filter('format', function (value, arg) {
 export default {
   name: 'Order',
   data() {
+
     return {
+      val: '',
       value: 3,
       value1: 1,
       value2: 't',
@@ -93,66 +110,51 @@ export default {
       option2: [
         { text: '时间排序', value: 't' },
       ],
-      orderLists: []
+      orderLists: [],
+
     }
   },
   async created() {
+    // this.toOrderList()
     const o = await orderLists()
-    this.orderLists = o.orderLists
+    this.orderLists = o.orders
   },
 
   computed: {
   },
   watch: {
-
     option1: function () {
-
     }
   },
   methods: {
     change(vval) {
       console.log(vval);
     },
-    // async toOrderList(pId) {
-    //   const res = await orderdetail(pId);
-    //   if (res) {
-    //     this.$router.push('orderdetail');
-    //   }
+    alldel() {
+      console.log(3)
+    },
+    oncedel(value) {
+      if (value == '') {
+        alert('请填写要删除的订单序号！')
+      } else {
+        if (this.orderLists.length == 1) {
+          this.orderLists = []
+        } else if (this.orderLists.length == 0) {
+          return 0;
+        } else {
+          let theNum = this.orderLists[value - 1]._id
+          this.orderLists = this.orderLists.filter(function (item) {
+            // await axios.get(`http://localhost:3009/api/v1/orders/${item._id}`)
+            return item._id != theNum
+          })
+          console.log(value, theNum)
+        }
+      }
 
-    //   console.log(pId)
-    // }
+    }
   },
   mounted: {
-    orders: [{
-      id: 1,
-      name: '小板凳',
-      genre: '乐园',
-      transport: '飞机',
-      date: '2021-05-11',
-      states: '未完成'
-    }, {
-      id: 2,
-      name: '外卖',
-      genre: '美食',
-      transport: '飞碟',
-      date: '2021-05-11',
-      states: '完成'
-    }, {
-      id: 3,
-      name: 'vue案例',
-      genre: '图书',
-      transport: '火箭',
-      date: '2021-05-11',
-      states: '完成'
-    },
-    {
-      id: 4,
-      name: '一丝秀发',
-      genre: '奢侈品',
-      transport: '流星',
-      date: '2021-05-11',
-      states: '未完成'
-    }]
+
   }
 };
 </script>
@@ -166,7 +168,7 @@ export default {
 }
 .tableTitle {
   margin-top: 2px;
-  background: rgba(144, 209, 209, 0.5);
+  background: rgba(216, 65, 166, 0.3);
   box-shadow: 0 2px rgb(235, 228, 228);
 }
 .dyge {
@@ -183,17 +185,39 @@ export default {
   background: url(image/jumpChild.gif) no-repeat center;
   background-size: cover;
 }
+.one,
+.two,
+.three,
+.four,
+.five,
+.six {
+  height: 100px;
+  line-height: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 h1 {
   padding: 3px 0;
   font-size: 20px;
 }
 hr {
   margin: 2px 0;
-  background: rgb(119, 59, 216);
+  background: rgb(123, 69, 209);
 }
 .orderbox {
   margin: auto;
   width: 100%;
   text-align: center;
+}
+.oncedel {
+  width: 80px;
+  border-radius: 5px;
+  margin: 10px;
+}
+.alldel {
+  width: 120px;
+  border-radius: 5px;
+  margin: 10px;
 }
 </style>
