@@ -1,30 +1,8 @@
-# duolastore-demo
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-### 分支2更改
-
-田浩
-
-付
+# 哆啦商城
+哆啦商城是基于VUE框架实现的一款移动端WebAPP
+由三位朋友和我一起参与项目的构建与开发
+## 项目如何跑起来？
+安装依赖```npm install```
+运行项目```npm start```
+## 其他
+代码为学习专用
